@@ -3,6 +3,7 @@ package br.com.dsocardoso.moneyapi.resource;
 import br.com.dsocardoso.moneyapi.event.RecursoCriadoEvent;
 import br.com.dsocardoso.moneyapi.model.Pessoa;
 import br.com.dsocardoso.moneyapi.repository.PessoaRepository;
+import br.com.dsocardoso.moneyapi.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class PessoaResource {
 
     @Autowired
     private ApplicationEventPublisher publisher;
+
+    @Autowired
+    private PessoaService pessoaService;
 
     @PostMapping
     public ResponseEntity<Pessoa> criar (@Valid @RequestBody Pessoa pessoa, HttpServletResponse response){
@@ -47,5 +51,11 @@ public class PessoaResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover (@PathVariable Long id){
         pessoaRepository.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Pessoa> atualizar (@PathVariable Long id, @Valid @RequestBody Pessoa pessoa){
+        Pessoa pessoaSalva = pessoaService.atualziar(id, pessoa);
+        return ResponseEntity.ok(pessoaSalva);
     }
 }
