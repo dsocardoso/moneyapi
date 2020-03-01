@@ -22,6 +22,11 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// tratamento de datas no java 8:
+	implementation 'org.hibernate:hibernate-java8'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	// a commons-lang3 serve para retornar msg melhor detalhadas sobre erro de sql
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
