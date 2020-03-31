@@ -65,4 +65,7 @@ public class LancamentoResource {
         return ResponseEntity.badRequest().body(erros);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void apagarLancamento(@PathVariable Long id) {lancamentoRepository.deleteById(id);}
 }
