@@ -4,6 +4,7 @@ import br.com.dsocardoso.moneyapi.event.RecursoCriadoEvent;
 import br.com.dsocardoso.moneyapi.exceptionhandler.MoneyApiExceptionHandler;
 import br.com.dsocardoso.moneyapi.model.Lancamento;
 import br.com.dsocardoso.moneyapi.repository.LancamentoRepository;
+import br.com.dsocardoso.moneyapi.repository.filter.LancamentoFilter;
 import br.com.dsocardoso.moneyapi.service.LancamentoService;
 import br.com.dsocardoso.moneyapi.service.exception.PessoaInexistenteOuInativaException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class LancamentoResource {
     private MessageSource messageSource;
 
     @GetMapping
-    public ResponseEntity<?> listarLancamentos(){
-        List<Lancamento> lancamentos = lancamentoRepository.findAll();
+    public ResponseEntity<?> pesquisar(LancamentoFilter lancamentoFilter){
+        List<Lancamento> lancamentos = lancamentoRepository.filtrar(lancamentoFilter);
         return !lancamentos.isEmpty() ? ResponseEntity.ok(lancamentos) : ResponseEntity.noContent().build();
     }
 

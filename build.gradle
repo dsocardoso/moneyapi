@@ -29,6 +29,7 @@ dependencies {
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.hibernate:hibernate-jpamodelgen:5.0.12.Final'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
