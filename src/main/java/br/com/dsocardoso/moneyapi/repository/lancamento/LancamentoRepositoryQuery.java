@@ -1,12 +1,11 @@
 package br.com.dsocardoso.moneyapi.repository.lancamento;
 
-import br.com.dsocardoso.moneyapi.model.Lancamento;
 import br.com.dsocardoso.moneyapi.repository.filter.LancamentoFilter;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface LancamentoRepositoryQuery {
-
-    public List<Lancamento> filtrar (LancamentoFilter lancamentoFilter);
+    //Alterado de List para Page o tipo da função
+    public Page filtrar(LancamentoFilter lancamentoFilter, Pageable pageable);
 
 }
