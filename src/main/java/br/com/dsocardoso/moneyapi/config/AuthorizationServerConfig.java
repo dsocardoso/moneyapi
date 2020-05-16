@@ -46,7 +46,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return accessTokenConverter;
     }
 
-    // temp. Deste modo é apenas para manter a aplicação em memória enqto não migrar para o JWT.
     @Bean
     public TokenStore tokenStore() {
         return new JwtTokenStore(accessTokenConverter());
