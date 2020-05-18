@@ -1,6 +1,8 @@
 package br.com.dsocardoso.moneyapi.cors;
 
 
+import br.com.dsocardoso.moneyapi.config.properties.MoneyApiProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -14,7 +16,8 @@ import java.io.IOException;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
 
-    private String originPermitido = "http://localhost:8000"; //TODO: Configurar para diferentes ambientes
+    @Autowired
+    private MoneyApiProperties moneyApiProperties;
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
@@ -23,10 +26,10 @@ public class CorsFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
 
         // estão fora do options pq devem ser enviados sempre
-        response.setHeader("Access-Control-Allow-Origin", originPermitido);
+        response.setHeader("Access-Control-Allow-Origin", moneyApiProperties.getOrigemPermitida());
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
-        if ("OPTIONS".equals(request.getMethod()) && originPermitido.equals(request.getHeader("Origin"))) {
+        if ("OPTIONS".equals(request.getMethod()) && moneyApiProperties.getOrigemPermitida().equals(request.getHeader("Origin"))) {
             response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
             response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
             response.setHeader("Access-Control-Max-Age", "3600");
