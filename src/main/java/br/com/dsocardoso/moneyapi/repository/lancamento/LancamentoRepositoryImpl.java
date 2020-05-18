@@ -1,7 +1,9 @@
 package br.com.dsocardoso.moneyapi.repository.lancamento;
 
+import br.com.dsocardoso.moneyapi.model.Categoria;
 import br.com.dsocardoso.moneyapi.model.Lancamento;
 import br.com.dsocardoso.moneyapi.repository.filter.LancamentoFilter;
+import br.com.dsocardoso.moneyapi.repository.projection.ResumoLancamento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +40,35 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
         //final do método alterado para acrescentar a opcao de paginacao
         adicionarRestricoesPaginacao(query, pageable);
 
-        return new PageImpl(query.getResultList(),pageable,total(lancamentoFilter));
+        return new PageImpl(query.getResultList(), pageable, total(lancamentoFilter));
+    }
+
+    @Override
+    public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<ResumoLancamento> criteria = builder.createQuery(ResumoLancamento.class);
+        Root<Lancamento> root = criteria.from(Lancamento.class);
+
+        criteria.select(builder.construct(ResumoLancamento.class
+                , root.get("id")
+                , root.get("descricao")
+                , root.get("dataVencimento")
+                , root.get("dataPagamento")
+                , root.get("valor")
+                , root.get("tipo")
+                , root.get("categoria").get("nome")
+                , root.get("pessoa").get("nome")));
+
+        //criar as restriçoes
+        Predicate[] predicates = criarRestricoes(lancamentoFilter, builder, root);
+        criteria.where(predicates);
+
+        TypedQuery<ResumoLancamento> query = manager.createQuery(criteria);
+
+        //final do método alterado para acrescentar a opcao de paginacao
+        adicionarRestricoesPaginacao(query, pageable);
+
+        return new PageImpl(query.getResultList(), pageable, total(lancamentoFilter));
     }
 
     private Predicate[] criarRestricoes(LancamentoFilter lancamentoFilter, CriteriaBuilder builder,
@@ -46,11 +76,11 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if(!StringUtils.isEmpty(lancamentoFilter.getDescricao())){
+        if (!StringUtils.isEmpty(lancamentoFilter.getDescricao())) {
             predicates.add(builder.like(builder.lower(root.get("descricao")), "%" + lancamentoFilter.getDescricao().toLowerCase() + "%"));
         }
 
-        if (!StringUtils.isEmpty(lancamentoFilter.getDataVencimentoDe())){
+        if (!StringUtils.isEmpty(lancamentoFilter.getDataVencimentoDe())) {
             predicates.add(builder.greaterThanOrEqualTo(root.get("dataVencimento"), lancamentoFilter.getDataVencimentoDe()));
         }
 
@@ -62,7 +92,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
     }
 
     // tratar a paginação
-    private void adicionarRestricoesPaginacao(TypedQuery<Lancamento> query, Pageable pageable) {
+    private void adicionarRestricoesPaginacao(TypedQuery<?> query, Pageable pageable) {
         int paginaAtual = pageable.getPageNumber();
         int totalRegistrosPorPagina = pageable.getPageSize();
         int primeiroRegistroDaPagina = paginaAtual * totalRegistrosPorPagina;
@@ -74,9 +104,9 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
     private Long total(LancamentoFilter lancamentoFilter) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-        Root<Lancamento> root= criteria.from(Lancamento.class);
+        Root<Lancamento> root = criteria.from(Lancamento.class);
 
-        Predicate[] predicates = criarRestricoes(lancamentoFilter, builder,root);
+        Predicate[] predicates = criarRestricoes(lancamentoFilter, builder, root);
         criteria.where(predicates);
 
         criteria.select(builder.count(root));

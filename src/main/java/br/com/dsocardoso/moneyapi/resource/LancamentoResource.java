@@ -5,6 +5,7 @@ import br.com.dsocardoso.moneyapi.exceptionhandler.MoneyApiExceptionHandler;
 import br.com.dsocardoso.moneyapi.model.Lancamento;
 import br.com.dsocardoso.moneyapi.repository.LancamentoRepository;
 import br.com.dsocardoso.moneyapi.repository.filter.LancamentoFilter;
+import br.com.dsocardoso.moneyapi.repository.projection.ResumoLancamento;
 import br.com.dsocardoso.moneyapi.service.LancamentoService;
 import br.com.dsocardoso.moneyapi.service.exception.PessoaInexistenteOuInativaException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,13 @@ public class LancamentoResource {
     //o recurso Pageable foi implementado para permitir paginação.
     public Page pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable){
         return lancamentoRepository.filtrar(lancamentoFilter, pageable);
+    }
+
+    @GetMapping(params = "resumo")
+    @PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+    //o recurso Pageable foi implementado para permitir paginação.
+    public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable){
+        return lancamentoRepository.resumir(lancamentoFilter, pageable);
     }
 
     @GetMapping("/{id}")
