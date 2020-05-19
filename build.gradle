@@ -9,20 +9,25 @@ group = 'br.com.dsocardoso'
 version = '1.0'
 sourceCompatibility = '1.8'
 
-task stage (type: Copy, dependsOn: [clean, build]) {
-	from jar.archivePath
-	into project.rootDir
-	rename {
-		'app.jar'
+
+task stage() {
+	dependsOn clean, war
+}
+war.mustRunAfter clean
+
+task copyToLib(type: Copy) {
+	into "$buildDir/server"
+	from(configurations.compile) {
+		include "webapp-runner*"
 	}
 }
 
-stage.mustRunAfter(clean)
+stage.dependsOn(copyToLib)
 
-clean.doLast {
-	project.file('app.jar').delete()
+jar {
+	baseName = 'app'
+	version = '0.0.1'
 }
-
 
 configurations {
 	developmentOnly
@@ -53,6 +58,8 @@ dependencies {
 	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.4.0.RELEASE'
 	//jwt
 	compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.1.0.RELEASE'
+
+	compile 'com.github.jsimone:webapp-runner:8.5.11.3'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
