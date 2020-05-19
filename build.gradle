@@ -6,8 +6,13 @@ plugins {
 }
 
 group = 'br.com.dsocardoso'
-version = '0.0.1-SNAPSHOT'
+version = '1.0'
 sourceCompatibility = '1.8'
+
+jar {
+	archiveBaseName = 'app'
+	archiveVersion = '1.0.0'
+}
 
 configurations {
 	developmentOnly
@@ -15,6 +20,7 @@ configurations {
 		extendsFrom developmentOnly
 	}
 }
+
 
 repositories {
 	mavenCentral()
@@ -50,3 +56,4 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
