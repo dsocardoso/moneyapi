@@ -39,7 +39,7 @@ dependencies {
 	//jwt
 	compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.1.0.RELEASE'
 
-	//compile 'com.github.jsimone:webapp-runner:8.5.11.3'
+	compile 'com.github.jsimone:webapp-runner:8.5.11.3'
 
 	implementation 'commons-io:commons-io:2.6'
 
