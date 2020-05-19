@@ -14,6 +14,19 @@ jar {
 	archiveVersion = '1.0.0'
 }
 
+task stage(type: Copy, dependsOn: [clean, build]) {
+	from jar.archivePath
+	into project.rootDir
+	rename {
+		'app.jar'
+	}
+}
+stage.mustRunAfter(clean)
+
+clean << {
+	project.file('app.jar').delete()
+}
+
 configurations {
 	developmentOnly
 	runtimeClasspath {
