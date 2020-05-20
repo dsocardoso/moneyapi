@@ -1,3 +1,5 @@
+qdo dev:
+
 spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.datasource.url=jdbc:postgresql://localhost:5432/moneyapi
@@ -14,3 +16,14 @@ spring.jpa.properties.hibernate.format_sql=true
 spring.jackson.deserialization.fail-on-unknown-properties=true
 
 spring.jackson.date-format=yyyy-MM-dd
+
+
+qdo prod:
+
+moneyproperties.seguranca.enable=true
+
+moneyproperties.origin-permitida=https://moneyapi-angular.herokuapp.com
+
+spring.datasource.url={JDBC_DATABASE_URL}
+spring.datasource.username={JDBC_DATABASE_USERNAME}
+spring.datasource.password={JDBC_DATABASE_PASSWORD}
