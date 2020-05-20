@@ -1,1 +1,1 @@
-web: java -Dspring.profiles.active=prod $JAVA_OPTS -jar build/libs/moneyapi*.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/moneyapi*.jar
