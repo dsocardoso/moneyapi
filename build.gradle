@@ -1,7 +1,6 @@
 plugins {
 	id 'org.springframework.boot' version '2.2.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'war'
 	id 'java'
 }
 
@@ -16,12 +15,12 @@ configurations {
 	}
 }
 
-
 repositories {
 	mavenCentral()
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	// tratamento de datas no java 8:
 	implementation 'org.hibernate:hibernate-java8'
@@ -39,13 +38,9 @@ dependencies {
 	//jwt
 	compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.1.0.RELEASE'
 
-	compile 'com.github.jsimone:webapp-runner:8.5.11.3'
-
-	implementation 'commons-io:commons-io:2.6'
-
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
@@ -53,17 +48,4 @@ dependencies {
 
 task stage(dependsOn: ['build', 'clean'])
 build.mustRunAfter clean
-
-task copyToLib(type: Copy) {
-	into "$buildDir/server"
-	from(configurations.compile) {
-		include "webapp-runner*"
-	}
-}
-
-stage.dependsOn(copyToLib)
-
-test {
-	useJUnitPlatform()
-}
 
