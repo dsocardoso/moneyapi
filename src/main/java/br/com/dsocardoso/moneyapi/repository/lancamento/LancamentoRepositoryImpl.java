@@ -1,6 +1,5 @@
 package br.com.dsocardoso.moneyapi.repository.lancamento;
 
-import br.com.dsocardoso.moneyapi.model.Categoria;
 import br.com.dsocardoso.moneyapi.model.Lancamento;
 import br.com.dsocardoso.moneyapi.repository.filter.LancamentoFilter;
 import br.com.dsocardoso.moneyapi.repository.projection.ResumoLancamento;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
-
     @PersistenceContext
     private EntityManager manager;
 
