@@ -83,4 +83,16 @@ public class LancamentoResource {
     @PreAuthorize("hasAuthority('ROLE_REMOVER_LANCAMENTO') and #oauth2.hasScope('write')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void apagarLancamento(@PathVariable Long id) {lancamentoRepository.deleteById(id);}
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO')")
+    public ResponseEntity<Lancamento> atualizar (@PathVariable Long codigo, @Valid @RequestBody Lancamento lancamento) {
+        try {
+            Lancamento lancamentoSalvo = lancamentoService.atualizar(codigo, lancamento);
+            return ResponseEntity.ok(lancamentoSalvo);
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
