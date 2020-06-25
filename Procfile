@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=prod,oauth-security $JAVA_OPTS -jar build/libs/moneyapi*.jar
+web: java -Dserver.port=$PORT -Dspring.profiles.active=prod,basic-security $JAVA_OPTS -jar build/libs/moneyapi*.jar
